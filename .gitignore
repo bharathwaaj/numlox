@@ -1,1 +1,67 @@
-*.DS_Store
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+.vscode/
+
+# IntelliJ-related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# The Python Python launcher
+pywasm.exe
+
+# Flutter/Dart-related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+**/ios/Flutter/Ephemeral/
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/Flutter/flutter_settings_builder.sh
+**/ios/Flutter/flutter_assets/
+**/ios/ServiceDefinitions.json
+**/ios/Runner/GeneratedPluginRegistrant.h
+**/ios/Runner/GeneratedPluginRegistrant.m
+**/android/app/src/main/java/io/flutter/plugins/
+**/android/local.properties
+**/android/key.properties
+**/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java
+**/android/app/src/main/kotlin/io/flutter/plugins/GeneratedPluginRegistrant.kt
+**/android/app/src/main/java/io/flutter/plugins/
+**/android/app/src/main/kotlin/io/flutter/plugins/
+**/android/.settings/
+**/android/.project
+**/android/.classpath
+**/android/bin/
+**/android/gen/
+**/android/out/
+**/android/build/
+**/android/app/build/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+/build/
+
+# Symbolication logging
+flutter_*.png
+flutter_*.xcresult
+
+# Web related
+lib/generated_plugin_registrant.dart
+
+# Executable platforms
+**/linux/flutter/ephemeral/
+**/windows/flutter/ephemeral/
+**/macos/Flutter/ephemeral/
+**/web/plugin_registrant.dart
