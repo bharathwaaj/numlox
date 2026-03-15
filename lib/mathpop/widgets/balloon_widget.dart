@@ -6,12 +6,14 @@ class BalloonWidget extends StatefulWidget {
   final BalloonModel balloon;
   final VoidCallback onPopped; // triggered when it finishes flying
   final VoidCallback onTap;
+  final Function(Offset position)? onPop;
 
   const BalloonWidget({
     super.key,
     required this.balloon,
     required this.onPopped,
     required this.onTap,
+    this.onPop,
   });
 
   @override
@@ -26,6 +28,7 @@ class _BalloonWidgetState extends State<BalloonWidget>
   late AnimationController _scaleController;
   late AnimationController _shakeController;
 
+  final GlobalKey _balloonKey = GlobalKey();
   bool _popped = false;
 
   @override
@@ -67,6 +70,19 @@ class _BalloonWidgetState extends State<BalloonWidget>
     if (widget.balloon.isCorrect) {
       _popped = true;
       _scaleController.reverse(); // Pop (scale to 0)
+
+      // Calculate global position for feedback effects
+      if (widget.onPop != null) {
+        final RenderBox? renderBox =
+            _balloonKey.currentContext?.findRenderObject() as RenderBox?;
+        if (renderBox != null) {
+          final position = renderBox.localToGlobal(
+            Offset(renderBox.size.width / 2, renderBox.size.height / 3),
+          );
+          widget.onPop!(position);
+        }
+      }
+
       widget.onTap(); // Trigger correct answer logic
     } else {
       _shakeController.forward(from: 0.0); // Shake
@@ -107,6 +123,7 @@ class _BalloonWidgetState extends State<BalloonWidget>
         );
       },
       child: GestureDetector(
+        key: _balloonKey,
         onTap: _handleTap,
         behavior: HitTestBehavior.opaque,
         child: SizedBox(
