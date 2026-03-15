@@ -32,39 +32,59 @@ class _MathPopGameScreenState extends State<MathPopGameScreen> {
         // Summary Screen
         if (!_controller.isPlaying && _controller.timeLeft <= 0) {
           return Scaffold(
-             appBar: AppBar(title: const Text('Game Over')),
-             body: Center(
-               child: Column(
-                 mainAxisAlignment: MainAxisAlignment.center,
-                 children: [
-                   const Text('Session Complete!', style: TextStyle(fontSize: 32)),
-                   const SizedBox(height: 10),
-                   Text('Final Score: ${_controller.score}', style: const TextStyle(fontSize: 48, fontWeight: FontWeight.bold, color: Colors.blue)),
-                   const SizedBox(height: 30),
-                   ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+            appBar: AppBar(title: const Text('Game Over')),
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    'Session Complete!',
+                    style: TextStyle(fontSize: 32),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    'Final Score: ${_controller.score}',
+                    style: const TextStyle(
+                      fontSize: 48,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue,
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 32,
+                        vertical: 16,
                       ),
-                      onPressed: () {
-                         Navigator.of(context).pop();
-                      },
-                      child: const Text('Main Menu', style: TextStyle(fontSize: 20))
-                   ),
-                   const SizedBox(height: 10),
-                   TextButton(
-                      onPressed: () {
-                        _controller.startGame(focus: 8);
-                      },
-                      child: const Text('Play Again', style: TextStyle(fontSize: 20))
-                   )
-                 ]
-               )
-             )
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text(
+                      'Main Menu',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  TextButton(
+                    onPressed: () {
+                      _controller.startGame(focus: 8);
+                    },
+                    child: const Text(
+                      'Play Again',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           );
         }
 
         // Active Game Screen
         return Scaffold(
+          backgroundColor: Colors.lightBlue[50],
           appBar: AppBar(
             title: Text('MathPop - Table ${_controller.tableFocus}'),
             actions: [
@@ -73,8 +93,12 @@ class _MathPopGameScreenState extends State<MathPopGameScreen> {
                 child: Center(
                   child: Text(
                     'Time: ${_controller.timeLeft}s',
-                    style: const TextStyle(fontSize: 16, color: Colors.redAccent, fontWeight: FontWeight.bold),
-                  )
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.redAccent,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ),
               Padding(
@@ -82,8 +106,11 @@ class _MathPopGameScreenState extends State<MathPopGameScreen> {
                 child: Center(
                   child: Text(
                     'Score: ${_controller.score}',
-                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  )
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -98,9 +125,13 @@ class _MathPopGameScreenState extends State<MathPopGameScreen> {
                 child: Center(
                   child: Text(
                     _controller.currentEquation,
-                    style: const TextStyle(fontSize: 56, fontWeight: FontWeight.w900, color: Colors.black87),
-                  )
-                )
+                    style: const TextStyle(
+                      fontSize: 56,
+                      fontWeight: FontWeight.w900,
+                      color: Colors.black87,
+                    ),
+                  ),
+                ),
               ),
               // Render Balloons
               ..._controller.activeBalloons.map((balloon) {
@@ -112,13 +143,13 @@ class _MathPopGameScreenState extends State<MathPopGameScreen> {
                   },
                   onTap: () {
                     _controller.handleTap(balloon);
-                  }
+                  },
                 );
               }),
             ],
           ),
         );
-      }
+      },
     );
   }
 }

@@ -35,8 +35,11 @@ class _BalloonWidgetState extends State<BalloonWidget>
       vsync: this,
       duration: const Duration(seconds: 5),
     );
-    
-    _flightAnimation = Tween<double>(begin: 1.1, end: -0.2).animate(_flightController);
+
+    _flightAnimation = Tween<double>(
+      begin: 1.1,
+      end: -0.2,
+    ).animate(_flightController);
 
     _flightController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
@@ -64,7 +67,7 @@ class _BalloonWidgetState extends State<BalloonWidget>
     if (widget.balloon.isCorrect) {
       _popped = true;
       _scaleController.reverse(); // Pop (scale to 0)
-      widget.onTap();             // Trigger correct answer logic
+      widget.onTap(); // Trigger correct answer logic
     } else {
       _shakeController.forward(from: 0.0); // Shake
     }
@@ -81,50 +84,72 @@ class _BalloonWidgetState extends State<BalloonWidget>
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: Listenable.merge([_flightAnimation, _scaleController, _shakeController]),
+      animation: Listenable.merge([
+        _flightAnimation,
+        _scaleController,
+        _shakeController,
+      ]),
       builder: (context, child) {
-        double shakeOffset = sin(_shakeController.value * pi * 4) * 10;
+        // Horizontal wobble calculation
+        // _flightController.value ranges from 0.0 to 1.0
+        final double wobble = sin(_flightController.value * pi * 8) * 12;
+        final double shakeOffset = sin(_shakeController.value * pi * 4) * 10;
 
         return Align(
           alignment: FractionalOffset(
-            0.1 + (widget.balloon.laneIndex * 0.25), 
+            0.1 + (widget.balloon.laneIndex * 0.25),
             _flightAnimation.value,
           ),
           child: Transform.translate(
-            offset: Offset(shakeOffset, 0),
-            child: Transform.scale(
-              scale: _scaleController.value,
-              child: child,
-            ),
+            offset: Offset(shakeOffset + wobble, 0),
+            child: Transform.scale(scale: _scaleController.value, child: child),
           ),
         );
       },
       child: GestureDetector(
         onTap: _handleTap,
         behavior: HitTestBehavior.opaque,
-        child: Container(
-          width: 70,
-          height: 90,
-          decoration: BoxDecoration(
-            color: Colors.blueAccent,
-            borderRadius: const BorderRadius.all(Radius.circular(40)),
-            boxShadow: const [
-              BoxShadow(
-                color: Colors.black26,
-                blurRadius: 4,
-                offset: Offset(2, 4),
-              )
-            ],
-          ),
-          child: Center(
-            child: Text(
-              widget.balloon.answerValue.toString(),
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+        child: SizedBox(
+          width: 90,
+          height: 150, // Increased height to accommodate the string
+          child: Stack(
+            alignment: Alignment.topCenter,
+            children: [
+              // Balloon String
+              Positioned(
+                top: 80,
+                child: CustomPaint(
+                  size: const Size(2, 60),
+                  painter: BalloonStringPainter(),
+                ),
               ),
-            ),
+              // Balloon Image body
+              Image.asset(
+                'assets/images/mathpop/balloon.png',
+                width: 90,
+                height: 100,
+                fit: BoxFit.contain,
+              ),
+              // Answer Text
+              Positioned(
+                top: 25,
+                child: Text(
+                  widget.balloon.answerValue.toString(),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    shadows: [
+                      Shadow(
+                        color: Colors.black45,
+                        offset: Offset(1, 1),
+                        blurRadius: 2,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -132,3 +157,25 @@ class _BalloonWidgetState extends State<BalloonWidget>
   }
 }
 
+class BalloonStringPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.black45
+      ..strokeWidth = 1.5
+      ..style = PaintingStyle.stroke;
+
+    final path = Path();
+    path.moveTo(size.width / 2, 0);
+    path.quadraticBezierTo(
+      size.width / 2 + 5,
+      size.height / 2,
+      size.width / 2 - 2,
+      size.height,
+    );
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
+}
