@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'mathpop/screens/mathpop_game_screen.dart';
+import 'fishing_math/screens/fishing_game_screen.dart';
 
 void main() {
   runApp(const MainApp());
@@ -15,15 +16,33 @@ class MainApp extends StatelessWidget {
         body: Center(
           child: Builder(
             builder: (context) {
-              return ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const MathPopGameScreen(),
-                  ));
-                },
-                child: const Text('Start MathPop'),
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const MathPopGameScreen(),
+                        ),
+                      );
+                    },
+                    child: const Text('Start MathPop'),
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const FishingGameScreen(),
+                        ),
+                      );
+                    },
+                    child: const Text('Start Fishing Math'),
+                  ),
+                ],
               );
-            }
+            },
           ),
         ),
       ),
